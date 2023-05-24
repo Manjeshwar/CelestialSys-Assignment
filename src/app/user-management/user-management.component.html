@@ -11,7 +11,7 @@
             <ng-container *ngSwitchCase="'item1'">
               <h2>Date and Time</h2>
               <div class="row">
-                <form [formGroup]="form">
+                <form [formGroup]="form" (ngSubmit)="dateAndTime()">
                     <div class="col-5 mb-3">
                       <label for="date">Date:</label>
                       <input class="form-control" type="date" id="date" formControlName="date" [min]="currentDate.toISOString().slice(0, 10)">
@@ -25,7 +25,7 @@
                       <label for="startTime">Start Time:</label>
                       <select class="form-control" id="startTime" formControlName="startTime">
                         <option value="">Select start time</option>
-                        <option *ngFor="let time of getTimes()" [value]="time.value">{{ time.value }}</option>
+                        <option *ngFor="let time of getTimes()" value="{{time.value}}">{{ time.value }}</option>
                       </select>
                       <div *ngIf="form.value.startTime.invalid && form.value.startTime.touched">
                         <div *ngIf="form.value.startTime.hasError('required')">Start time is required.</div>
@@ -48,39 +48,60 @@
                       <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Submit</button>
                   </form>
                   
+                  <div class="col-4 mt-5 border" *ngIf="showResult">
+                    Result:
+                    <p>Date: {{this.form.value.date}}</p>
+                    <p>Start time: {{this.form.value.startTime}}</p>
+                    <p>End time: {{this.form.value.endTime}}</p>
+                  </div>
             </div>
             </ng-container>
             <ng-container *ngSwitchCase="'item2'">
                 <h2>Calendar Form</h2>
 
-                <form>
-                  <div>
-                    <label for="calendarType">Calendar Type:</label>
-                    <select id="calendarType" [(ngModel)]="selectedCalendarType" (change)="onCalendarTypeChange()">
-                      <option value="">Select Calendar Type</option>
-                      <option value="google">Google</option>
-                      <option value="azure">Azure</option>
-                    </select>
-                  </div>
-                
-                  <div>
-                    <label for="timezone">Timezone:</label>
-                    <select id="timezone" [(ngModel)]="selectedTimezone">
-                      <option value="">Select Timezone</option>
-                      <option value="America/Toronto">Eastern Time (ET)</option>
-                      <option value="America/Halifax">Atlantic Time (AT)</option>
-                      <option value="America/St_Johns">Newfoundland Time (NT)</option>
-                      <option value="America/Winnipeg">Central Time (CT)</option>
-                      <option value="America/Edmonton">Mountain Time (MT)</option>
-                      <option value="America/Vancouver">Pacific Time (PT)</option>
-                    </select>
-                  </div>
-                
-                  <div *ngIf="showAuthorizeButton">
-                    <button (click)="authorize()">Authorize</button>
-    <button (click)="listCalendars()">List Calendars</button>
-                  </div>
-                </form>
+                <div class="col-4">
+                  <form [formGroup]="calendarForm">
+                    <div>
+                      <label for="calendarType">Calendar Type:</label>
+                      <select class="form-control mb-3" formControlName="selectedCalendarType" (change)="onCalendarTypeChange()">
+                        <option value="">Select Calendar Type</option>
+                        <option value="google">Google</option>
+                        <option value="azure">Azure</option>
+                      </select>
+                    </div>
+                  
+                    <div>
+                      <label for="timezone">Timezone:</label>
+                      <select class="form-control mb-3" formControlName="selectedTimezone" (change)="onCalendarTypeChange()">
+                        <option value="">Select Timezone</option>
+                        <option value="America/Toronto">Eastern Time (ET)</option>
+                        <option value="America/Halifax">Atlantic Time (AT)</option>
+                        <option value="America/St_Johns">Newfoundland Time (NT)</option>
+                        <option value="America/Winnipeg">Central Time (CT)</option>
+                        <option value="America/Edmonton">Mountain Time (MT)</option>
+                        <option value="America/Vancouver">Pacific Time (PT)</option>
+                      </select>
+                    </div>
+                  
+                    <div *ngIf="showAuthorizeButton">
+                      <!-- <button (click)="signIn()">Sign In</button>
+                      <button (click)="createCalendar()">Create Calendar</button> -->
+                      <button class="btn btn-primary" (click)="trySampleRequest()">Google Authorize Calendar</button>
+
+                      <div class="mt-5" *ngIf="accessToken">
+                        <label for="timezone">Access token:</label>                        
+                        <input type="text" class="form-control" [(ngModel)]="accessToken" value="{{accessToken}}"/>
+                      </div>
+
+                      <div *ngIf="accessToken">
+                        <label for="timezone">Refresh token:</label>                        
+                        <input type="text" class="form-control" [(ngModel)]="refreshToken"/>
+                      </div>
+                        
+                       
+                    </div>
+                  </form>
+                </div>
                 
             </ng-container>
             <ng-container *ngSwitchDefault>

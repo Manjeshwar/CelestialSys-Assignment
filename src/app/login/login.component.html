@@ -1,15 +1,20 @@
-<h2>Login</h2>
-<form [formGroup]="loginForm" (ngSubmit)="login()">
-  <div>
-    <label for="username">Username:</label>
-    <input type="text" id="username" formControlName="username" required>
+<div class="row text-center">
+  <h2>Login</h2>
+  <div class="col-4"></div>
+  <div class="col-4">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="mb-3">
+        <label for="username">Username:</label>
+        <input class="form-control" type="text" id="username" formControlName="username" required>
+      </div>
+      <div class="mb-3">
+        <label for="password">Password:</label>
+        <input class="form-control" type="password" id="password" formControlName="password" required>
+        <div *ngIf="loginForm.value.password.invalid && (loginForm.value.password.dirty || loginForm.value.password.touched)" class="error-message">
+          Password should have a minimum of 10 characters, one special character, one number, one uppercase letter, and one lowercase letter.
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit" [disabled]="loginForm.invalid">Submit</button>
+    </form>
   </div>
-  <div>
-    <label for="password">Password:</label>
-    <input type="password" id="password" formControlName="password" required>
-    <div *ngIf="loginForm.value.password.invalid && (loginForm.value.password.dirty || loginForm.value.password.touched)" class="error-message">
-      Password should have a minimum of 10 characters, one special character, one number, one uppercase letter, and one lowercase letter.
-    </div>
-  </div>
-  <button class="btn btn-primary" type="submit" [disabled]="loginForm.invalid">Submit</button>
-</form>
+</div>
