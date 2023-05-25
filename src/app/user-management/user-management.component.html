@@ -88,17 +88,18 @@
                       <button (click)="createCalendar()">Create Calendar</button> -->
                       <button class="btn btn-primary" (click)="trySampleRequest()">Google Authorize Calendar</button>
 
-                      <div class="mt-5" *ngIf="accessToken">
-                        <label for="timezone">Access token:</label>                        
-                        <input type="text" class="form-control" [(ngModel)]="accessToken" value="{{accessToken}}"/>
-                      </div>
-
-                      <div *ngIf="accessToken">
-                        <label for="timezone">Refresh token:</label>                        
-                        <input type="text" class="form-control" [(ngModel)]="refreshToken"/>
-                      </div>
+                      
                         
                        
+                    </div>
+                    <div class="mt-5" *ngIf="accessToken">
+                      <label for="timezone">Access token:</label>                        
+                      <input type="text" class="form-control" [(ngModel)]="accessToken" value="{{accessToken}}"/>
+                    </div>
+
+                    <div *ngIf="accessToken">
+                      <label for="timezone">Refresh token:</label>                        
+                      <input type="text" class="form-control" [(ngModel)]="refreshToken"/>
                     </div>
                   </form>
                 </div>
