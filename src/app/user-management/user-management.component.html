@@ -1,118 +1,117 @@
 
 <div class="row">
-    <div class="col-12 mb-5">
-        <h1>User Management</h1>
-    </div>
-    <div class="col-3">        
-        <p-menu [model]="items"></p-menu>
-    </div>
-    <div class="col-9">   
-        <div [ngSwitch]="selectedItem">
-            <ng-container *ngSwitchCase="'item1'">
-              <h2>Date and Time</h2>
-              <div class="row">
-                <form [formGroup]="form" (ngSubmit)="dateAndTime()">
-                    <div class="col-5 mb-3">
-                      <label for="date">Date:</label>
-                      <input class="form-control" type="date" id="date" formControlName="date" [min]="currentDate.toISOString().slice(0, 10)">
-                      <div *ngIf="form.value.date.invalid && form.value.date.touched">
-                        <div *ngIf="form.value.date.hasError('required')">Date is required.</div>
-                        <div *ngIf="form.value.date.hasError('pastDate')">Cannot select a past date.</div>
-                      </div>
+  <div class="col-12 mb-5">
+      <h1>User Management</h1>
+  </div>
+  <div class="col-3">        
+      <p-menu [model]="items"></p-menu>
+  </div>
+  <div class="col-9">   
+      <div [ngSwitch]="selectedItem">
+          <ng-container *ngSwitchCase="'item1'">
+            <h2>Date and Time</h2>
+            <div class="row">
+              <form [formGroup]="form" (ngSubmit)="dateAndTime()">
+                  <div class="col-5 mb-3">
+                    <label for="date">Date:</label>
+                    <input class="form-control" type="date" id="date" formControlName="date" [min]="currentDate.toISOString().slice(0, 10)">
+                    <div *ngIf="form.value.date.invalid && form.value.date.touched">
+                      <div *ngIf="form.value.date.hasError('required')">Date is required.</div>
+                      <div *ngIf="form.value.date.hasError('pastDate')">Cannot select a past date.</div>
                     </div>
-                  
-                    <div class="col-5 mb-3">
-                      <label for="startTime">Start Time:</label>
-                      <select class="form-control" id="startTime" formControlName="startTime">
-                        <option value="">Select start time</option>
-                        <option *ngFor="let time of getTimes()" value="{{time.value}}">{{ time.value }}</option>
-                      </select>
-                      <div *ngIf="form.value.startTime.invalid && form.value.startTime.touched">
-                        <div *ngIf="form.value.startTime.hasError('required')">Start time is required.</div>
-                      </div>
-                    </div>
-                  
-                    <div class="col-5 mb-3">
-                        <label for="endTime">End Time:</label>
-                        <select class="form-control" id="endTime" formControlName="endTime">
-                          <option value="">Select end time</option>
-                          <option *ngFor="let time of getTimes()" [value]="time.value" [disabled]="!time.selectable">{{ time.value }}</option>
-                        </select>
-                        <div *ngIf="form.value.endTime.invalid && form.value.endTime.touched">
-                          <div *ngIf="form.value.endTime.hasError('required')">End time is required.</div>
-                          <div *ngIf="form.hasError('invalidTimeRange')">Invalid time range.</div>
-                          <div *ngIf="form.hasError('invalidEndTime')">Invalid end time selection.</div>
-                        </div>
-                      </div>
-                    
-                      <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Submit</button>
-                  </form>
-                  
-                  <div class="col-4 mt-5 border" *ngIf="showResult">
-                    Result:
-                    <p>Date: {{this.form.value.date}}</p>
-                    <p>Start time: {{this.form.value.startTime}}</p>
-                    <p>End time: {{this.form.value.endTime}}</p>
                   </div>
-            </div>
-            </ng-container>
-            <ng-container *ngSwitchCase="'item2'">
-                <h2>Calendar Form</h2>
-
-                <div class="col-4">
-                  <form [formGroup]="calendarForm">
-                    <div>
-                      <label for="calendarType">Calendar Type:</label>
-                      <select class="form-control mb-3" formControlName="selectedCalendarType" (change)="onCalendarTypeChange()">
-                        <option value="">Select Calendar Type</option>
-                        <option value="google">Google</option>
-                        <option value="azure">Azure</option>
-                      </select>
-                    </div>
-                  
-                    <div>
-                      <label for="timezone">Timezone:</label>
-                      <select class="form-control mb-3" formControlName="selectedTimezone" (change)="onCalendarTypeChange()">
-                        <option value="">Select Timezone</option>
-                        <option value="America/Toronto">Eastern Time (ET)</option>
-                        <option value="America/Halifax">Atlantic Time (AT)</option>
-                        <option value="America/St_Johns">Newfoundland Time (NT)</option>
-                        <option value="America/Winnipeg">Central Time (CT)</option>
-                        <option value="America/Edmonton">Mountain Time (MT)</option>
-                        <option value="America/Vancouver">Pacific Time (PT)</option>
-                      </select>
-                    </div>
-                  
-                    <div *ngIf="showAuthorizeButton">
-                      <!-- <button (click)="signIn()">Sign In</button>
-                      <button (click)="createCalendar()">Create Calendar</button> -->
-                      <button class="btn btn-primary" (click)="trySampleRequest()">Google Authorize Calendar</button>
-
-                      
-                        
-                       
-                    </div>
-                    <div class="mt-5" *ngIf="accessToken">
-                      <label for="timezone">Access token:</label>                        
-                      <input type="text" class="form-control" [(ngModel)]="accessToken" value="{{accessToken}}"/>
-                    </div>
-
-                    <div *ngIf="accessToken">
-                      <label for="timezone">Refresh token:</label>                        
-                      <input type="text" class="form-control" [(ngModel)]="refreshToken"/>
-                    </div>
-                  </form>
-                </div>
                 
-            </ng-container>
-            <ng-container *ngSwitchDefault>
-              <h2>No Item Selected</h2>
-              <p>Please select an item from the menu.</p>
-            </ng-container>
+                  <div class="col-5 mb-3">
+                    <label for="startTime">Start Time: {{form.value.startTime}}</label>
+                    <select class="form-control" formControlName="startTime">
+                      <option value="">Select start time</option>
+                      <option *ngFor="let time of getTimes()" [value]="time.value">{{ time.value }}</option>
+                    </select>
+                    <div *ngIf="form.value.startTime.invalid && form.value.startTime.touched">
+                      <div *ngIf="form.value.startTime.hasError('required')">Start time is required.</div>
+                    </div>
+                  </div>
+                
+                  <div class="col-5 mb-3">
+                      <label for="endTime">End Time: {{form.value.endTime}}</label>
+                      <select class="form-control" id="endTime" formControlName="endTime">
+                        <option value="">Select end time</option>
+                        <option *ngFor="let time of getTimes()" [value]="time.value" [disabled]="!time.selectable">{{ time.value }}</option>
+                      </select>
+                      <div *ngIf="form.value.endTime.invalid && form.value.endTime.touched">
+                        <div *ngIf="form.value.endTime.hasError('required')">End time is required.</div>
+                        <div *ngIf="form.hasError('invalidTimeRange')">Invalid time range.</div>
+                        <div *ngIf="form.hasError('invalidEndTime')">Invalid end time selection.</div>
+                      </div>
+                    </div>
+                  
+                    <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Submit</button>
+                </form>
+                
+                <div class="col-4 mt-5 border" *ngIf="showResult">
+                  Result:
+                  <p>Date: {{this.form.value.date}}</p>
+                  <p>Start time: {{this.form.value.startTime}}</p>
+                  <p>End time: {{this.form.value.endTime}}</p>
+                </div>
           </div>
-    </div>
-</div>
+          </ng-container>
+          <ng-container *ngSwitchCase="'item2'">
+              <h2>Calendar Form</h2>
 
+              <div class="col-4">
+                <form [formGroup]="calendarForm">
+                  <div>
+                    <label for="calendarType">Calendar Type:</label>
+                    <select class="form-control mb-3" formControlName="selectedCalendarType" (change)="onCalendarTypeChange()">
+                      <option value="">Select Calendar Type</option>
+                      <option value="google">Google</option>
+                      <option value="azure">Azure</option>
+                    </select>
+                  </div>
+                
+                  <div>
+                    <label for="timezone">Timezone:</label>
+                    <select class="form-control mb-3" formControlName="selectedTimezone" (change)="onCalendarTypeChange()">
+                      <option value="">Select Timezone</option>
+                      <option value="America/Toronto">Eastern Time (ET)</option>
+                      <option value="America/Halifax">Atlantic Time (AT)</option>
+                      <option value="America/St_Johns">Newfoundland Time (NT)</option>
+                      <option value="America/Winnipeg">Central Time (CT)</option>
+                      <option value="America/Edmonton">Mountain Time (MT)</option>
+                      <option value="America/Vancouver">Pacific Time (PT)</option>
+                    </select>
+                  </div>
+                
+                  <div *ngIf="showAuthorizeButton">
+                    <!-- <button (click)="signIn()">Sign In</button>
+                    <button (click)="createCalendar()">Create Calendar</button> -->
+                    <button class="btn btn-primary" (click)="trySampleRequest()">Google Authorize Calendar</button>
+
+                    
+                      
+                     
+                  </div>
+                  <div class="mt-5" *ngIf="accessToken">
+                    <label for="timezone">Access token:</label>                        
+                    <input type="text" class="form-control" [(ngModel)]="accessToken" value="{{accessToken}}"/>
+                  </div>
+
+                  <div *ngIf="accessToken">
+                    <label for="timezone">Refresh token:</label>                        
+                    <input type="text" class="form-control" [(ngModel)]="refreshToken"/>
+                  </div>
+                </form>
+              </div>
+              
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <h2>No Item Selected</h2>
+            <p>Please select an item from the menu.</p>
+          </ng-container>
+        </div>
+  </div>
+</div>
 
 
 
